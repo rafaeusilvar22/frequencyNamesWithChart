@@ -38,10 +38,8 @@
         </button>
       </div>
     </div>
-    <div>
-      <div class="my-6" v-for="info in information" :key="info">
-        <span>{{ info.nome }}</span>
-      </div>
+    <div class="my-3">
+      <StateComponent v-if="load" :dataChart="periodValue" />
     </div>
     <ChartPeriod v-if="load" :dataChart="periodValue" />
   </div>
@@ -49,6 +47,7 @@
 
 <script>
 import ChartPeriod from "./ChartPeriod.vue";
+import StateComponent from "./StateComponent.vue";
 
 import axios from "axios";
 
@@ -56,6 +55,7 @@ export default {
   name: "SearchComponent",
   components: {
     ChartPeriod,
+    StateComponent
   },
   data() {
     let periodValue;

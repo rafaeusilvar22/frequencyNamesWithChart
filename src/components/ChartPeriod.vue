@@ -60,6 +60,7 @@ export default {
   // todas as fases do ciclo de vida do Vue js 3 e seus hooks
   // https://www.youtube.com/watch?v=XpIhFIDtB1M&ab_channel=TiagoMatos
   beforeUpdate() {
+
     let newData = this.dataChart[0].res.map((item) => {
       return item.frequencia;
     });
