@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <div class="flex justify-center aling-center w-full">
+    <div class="flex justify-center aling-center w-full md:w-auto">
       <apexchart
         class="chart"
         width="100%"
@@ -77,6 +77,6 @@ export default {
 </script>
 <style>
 .chart {
-  width: 80%;
+  width: 100%;
 }
 </style>

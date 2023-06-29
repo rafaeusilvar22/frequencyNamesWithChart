@@ -1,48 +1,50 @@
 <template class="ml-2" id="app">
-  <h5 class="my-6 flex justify-center">{{ title }}</h5>
-  <div class="sm:flex grid items-end justify-center">
-    <div class="sm:flex grid justify-center">
-      <div>
-        <label class="label">
-          <span class="label-text">Nome</span>
-        </label>
-        <input
-          type="text"
-          v-model="nome"
-          placeholder="Digite seu nome"
-          class="input input-bordered input-accent w-full max-w-xs"
-        />
+  <div class="mx-2">
+    <h5 class="my-6 flex justify-center">{{ title }}</h5>
+    <div class="sm:flex items-end justify-center">
+      <div class="sm:flex justify-center">
+        <div>
+          <label class="label">
+            <span class="label-text">Nome</span>
+          </label>
+          <input
+            type="text"
+            v-model="nome"
+            placeholder="Digite seu nome"
+            class="input input-bordered input-accent w-full md:w-auto"
+          />
+        </div>
+        <div class="sm:mx-3">
+          <label class="label">
+            <span class="label-text">Sexo (opcional)</span>
+          </label>
+          <select
+            v-model="sexySelected"
+            class="select select-accent w-full md:w-auto"
+          >
+            <!-- <option selected>Ambos os sexos</option> -->
+            <option v-for="option in sex" :key="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
       </div>
-      <div class="sm:mx-3">
-        <label class="label">
-          <span class="label-text">Sexo (opcional)</span>
-        </label>
-        <select
-          v-model="sexySelected"
-          class="select select-accent w-full max-w-xs"
+      <div class="sm:my-0 my-6">
+        <button
+          class="btn btn-outline btn-success w-full md:w-auto"
+          @click="getNameData()"
         >
-          <!-- <option selected>Ambos os sexos</option> -->
-          <option v-for="option in options" :key="option">
-            {{ option }}
-          </option>
-        </select>
+          Pesquisar
+        </button>
       </div>
     </div>
-    <div class="sm:my-0 my-6">
-      <button
-        class="btn btn-outline btn-success w-full md:w-auto"
-        @click="getNameData()"
-      >
-        Pesquisar
-      </button>
+    <div>
+      <div class="my-6" v-for="info in information" :key="info">
+        <span>{{ info.nome }}</span>
+      </div>
     </div>
+    <ChartPeriod v-if="load" :dataChart="periodValue" />
   </div>
-  <div v-if="nome">
-    <div class="my-6" v-for="info in information" :key="info">
-      <span>{{ info.nome }}</span>
-    </div>
-  </div>
-  <ChartPeriod v-if="load" :dataChart="periodValue" />
 </template>
 
 <script>
@@ -62,12 +64,12 @@ export default {
       periodValue,
       title:
         "No Brasil, de acordo com o Censo Demográfico 2010, existem cerca de 200 milhões de habitantes com mais de 130 mil nomes diferentes.",
-      message: "hello world",
-      nome: "",
-      period: "",
+      sex: ["MASCULINO", "FEMININO"],
+      nome: null,
+      period: null,
       information: null,
-      sexySelected: "",
-      options: ["M", "F"],
+      sexySelected: null,
+      optionMF: null,
     };
   },
   // created() {
@@ -75,20 +77,21 @@ export default {
   // },
   methods: {
     getNameData() {
+      if (this.sexySelected == "MASCULINO") {
+        this.optionMF = "M";
+      } else {
+        this.optionMF = "F";
+      }
+      
       if (this.nome.length > 2) {
         axios
           .get(
-            `https://servicodados.ibge.gov.br/api/v2/censos/nomes/${this.nome}?sexo=${this.sexySelected}`
+            `https://servicodados.ibge.gov.br/api/v2/censos/nomes/${this.nome}?sexo=${this.optionMF}`
           )
           .then((res) => {
             this.information = res.data;
             this.periodValue = res.data;
             console.log("GET", res.data);
-            // console.log(
-            //   this.periodValue[0].res.map(function (item) {
-            //     return item.periodo;
-            //   })
-            // );
           })
           .catch((error) => {
             console.log(error);
