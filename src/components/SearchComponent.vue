@@ -58,7 +58,7 @@ export default {
   data() {
     let periodValue;
     return {
-      load: true,
+      load: false,
       periodValue,
       title:
         "No Brasil, de acordo com o Censo Demográfico 2010, existem cerca de 200 milhões de habitantes com mais de 130 mil nomes diferentes.",
@@ -67,7 +67,6 @@ export default {
       period: "",
       information: null,
       sexySelected: "",
-      // sex: ["Masculino", "Feminino"],
       options: ["M", "F"],
     };
   },
